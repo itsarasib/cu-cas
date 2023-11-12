@@ -4,6 +4,7 @@ import LoginPage from "../Pages/LoginPage";
 import CourseListsPage from "../Pages/CourseListsPage";
 import EvaluationPage from "../Pages/EvaluationPage";
 import UnAuthorizePage from "../Pages/UnauthorizePage";
+import SyllabusPage from "../Pages/SyllabusPage";
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouter = () => {
         <Route path="/evaluation" element={<CourseListsPage />} />
         <Route path="/evaluation/:id" element={<EvaluationPage />} />
         <Route path="/unauthorized" element={<UnAuthorizePage />} />
+        <Route path="/syllabus" element={<SyllabusPage />} />
         {/* <Route path="/evaluation/:id" element={<EvaluationPage />} />
         <Route path="/evaluation/:id" element={<EvaluationPage />} />
         {/* <Route path="/evaluation" element={<EvaluationPage />} />
