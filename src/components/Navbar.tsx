@@ -11,8 +11,6 @@ import { useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-
 const navItem = [
   {
     title: "home",
