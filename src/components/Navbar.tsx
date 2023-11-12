@@ -59,8 +59,8 @@ const Navbar: React.FC = () => {
             return (
               <Link
                 href={item.path}
-                fontWeight={700}
-                fontSize="20px"
+                fontWeight={500}
+                fontSize="18px"
                 _hover={{ color: "pink" }}
               >
                 {item.title}
