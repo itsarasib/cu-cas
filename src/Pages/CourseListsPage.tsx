@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { mockCourses } from "../mock/mockCourses";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ActiveProps: React.ComponentProps<typeof Box> = {
   bg: "linear-gradient(180deg, #F08EFCCC,#EE5166)",
@@ -42,6 +43,7 @@ const InactiveProps: React.ComponentProps<typeof Box> = {
 const CourseListsPage = () => {
   const [isEvaluated, setIsEvaluated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const filteredCourses = isEvaluated
     ? mockCourses.filter((course) => course.status === "evaluated")
@@ -145,6 +147,15 @@ const CourseListsPage = () => {
                 alignItems="center"
                 justifyContent="center"
                 mx="auto"
+                border="1px solid transparent"
+                cursor="pointer"
+                onClick={() => navigate(`/evaluation/${course.course_id}`)}
+                sx={{
+                  "&:hover": {
+                    border: "1px solid gradient(#e66465, #9198e5)",
+                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+                  },
+                }}
               >
                 <Image
                   src={course.img_url}
