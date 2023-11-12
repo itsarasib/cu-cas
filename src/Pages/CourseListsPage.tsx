@@ -13,8 +13,9 @@ import {
   SkeletonText,
 } from "@chakra-ui/react";
 import { mockCourses } from "../mock/mockCourses";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const ActiveProps: React.ComponentProps<typeof Box> = {
   bg: "linear-gradient(180deg, #F08EFCCC,#EE5166)",
@@ -43,6 +44,7 @@ const InactiveProps: React.ComponentProps<typeof Box> = {
 const CourseListsPage = () => {
   const [isEvaluated, setIsEvaluated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const filteredCourses = isEvaluated
@@ -64,6 +66,12 @@ const CourseListsPage = () => {
       setIsLoading(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/unauthorized");
+    }
+  });
 
   return (
     <Box w="80%" mx="auto">

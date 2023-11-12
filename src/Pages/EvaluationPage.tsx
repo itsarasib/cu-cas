@@ -15,6 +15,8 @@ import { RootState } from "../store/store";
 import { useEffect } from "react";
 import { mapFormQuestionToAnswerState } from "../utils/mapFormQuestionToAnswerState";
 import { initialize } from "../store/evaluationSlice";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const breadCrumbItem: BreadCrumbItem[] = [
   {
@@ -30,6 +32,8 @@ const breadCrumbItem: BreadCrumbItem[] = [
 const EvaluationPage: React.FC = () => {
   const form = useSelector((state: RootState) => state.evaluationForm.result);
   const dispatch = useDispatch();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: mockForm.section.length,
@@ -59,6 +63,12 @@ const EvaluationPage: React.FC = () => {
     const initalState = mapFormQuestionToAnswerState(mockForm);
     dispatch(initialize(initalState));
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/unauthorized");
+    }
+  });
 
   return (
     <Box w="full" bgColor="rgba(255, 238, 244, 0.50)" minH="100vh" pt="30px">
