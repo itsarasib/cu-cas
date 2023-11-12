@@ -46,7 +46,7 @@ export const QuestionComponent: React.FC<Props> = ({
             }}
             value={form[activeStep]?.question[index].answer ?? ""}
           >
-            <HStack>
+            <HStack gap="20px" mt="10px">
               {question.option.map((option) => {
                 return (
                   <Radio value={option.value}>
@@ -63,7 +63,7 @@ export const QuestionComponent: React.FC<Props> = ({
       return (
         <Box>
           <QuestionText title={question.title} />
-          <HStack>
+          <HStack gap="20px" mt="10px">
             {question.option.map((option) => {
               return (
                 <Box>
@@ -80,6 +80,7 @@ export const QuestionComponent: React.FC<Props> = ({
         <Box>
           <QuestionText title={question.title} />
           <Input
+            mt="10px"
             value={form[activeStep]?.question[index].answer ?? ""}
             placeholder={question.title}
             onChange={(e) => handleChange(e.target.value)}

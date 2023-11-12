@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { Section } from "../types/form";
 import { QuestionComponent } from "../utils/mapFormQuestion";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 const Form: React.FC<Props> = ({ activeStep, section }) => {
   return (
-    <Box>
+    <Stack gap="20px" mt="20px">
       {section.question.map((question, index) => (
         <QuestionComponent
           question={question}
@@ -16,7 +16,7 @@ const Form: React.FC<Props> = ({ activeStep, section }) => {
           index={index}
         />
       ))}
-    </Box>
+    </Stack>
   );
 };
 
