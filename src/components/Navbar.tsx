@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const navItem = [
   {
@@ -31,12 +32,14 @@ const navItem = [
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const { isAuthenticated, token, name } = useAuth();
 
   const handleLogout = () => {
     setIsLoading(true);
     setTimeout(() => {
       dispatch(logout());
+      navigate("/");
       setIsLoading(false);
     }, 300);
   };

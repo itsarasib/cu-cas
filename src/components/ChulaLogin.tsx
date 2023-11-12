@@ -58,7 +58,7 @@ const ChulaLogin = () => {
           if (!result.token && !result.name)
             throw new Error("token or name is not found");
           dispatch(login({ token: result.token, name: result.name }));
-          navigate("/home");
+          navigate("/");
         } else {
           setLoginError({
             error: true,
