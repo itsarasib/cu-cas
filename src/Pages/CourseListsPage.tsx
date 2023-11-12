@@ -13,7 +13,9 @@ import {
   SkeletonText,
 } from "@chakra-ui/react";
 import { mockCourses } from "../mock/mockCourses";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const ActiveProps: React.ComponentProps<typeof Box> = {
   bg: "linear-gradient(180deg, #F08EFCCC,#EE5166)",
@@ -42,6 +44,8 @@ const InactiveProps: React.ComponentProps<typeof Box> = {
 const CourseListsPage = () => {
   const [isEvaluated, setIsEvaluated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const filteredCourses = isEvaluated
     ? mockCourses.filter((course) => course.status === "evaluated")
@@ -63,8 +67,14 @@ const CourseListsPage = () => {
     }, 1000);
   };
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/unauthorized");
+    }
+  });
+
   return (
-    <Box w="80%" mx="auto">
+    <Box w="80%" mx="auto" mt="30px">
       <Flex justifyContent="center">
         <Box
           borderLeftRadius="20px"
@@ -93,11 +103,11 @@ const CourseListsPage = () => {
           </Box>
           <Box
             bg="gray.200"
-            fontWeight="700"
-            fontSize="16px"
-            borderRadius="16px"
+            color="#8A97AB"
+            fontSize="14px"
+            borderRadius="20px"
             py="5px"
-            px="10px"
+            px="13px"
             mx="10px"
           >
             {filteredCourses.length}
@@ -137,14 +147,24 @@ const CourseListsPage = () => {
               <Box
                 key={course.course_id}
                 bg="#ECF1F4"
-                width="200px"
-                height="200px"
+                width="250px"
+                height="240px"
                 borderRadius="20px"
                 display="flex"
+                gap="10px"
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
                 mx="auto"
+                border="1px solid transparent"
+                cursor="pointer"
+                onClick={() => navigate(`/evaluation/${course.course_id}`)}
+                sx={{
+                  "&:hover": {
+                    border: "1px solid gradient(#e66465, #9198e5)",
+                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+                  },
+                }}
               >
                 <Image
                   src={course.img_url}
@@ -155,9 +175,15 @@ const CourseListsPage = () => {
                 <Text textAlign="center" fontWeight="600">
                   {course.title}
                 </Text>
-                <Text textAlign="center">{course.semester}</Text>
-                <Text textAlign="center">{course.professor}</Text>
-                <Text textAlign="center">valid until: {course.expire_in}</Text>
+                <Text fontWeight={500} textAlign="center">
+                  {course.semester}
+                </Text>
+                <Text fontWeight={500} textAlign="center">
+                  {course.professor}
+                </Text>
+                <Text fontWeight={500} textAlign="center">
+                  valid until: {course.expire_in}
+                </Text>
               </Box>
             ))}
       </SimpleGrid>

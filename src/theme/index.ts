@@ -31,6 +31,8 @@ const theme = extendTheme({
       bg: "#ECF1F4",
       border: "#ECEDEF",
     },
+    gradient:
+      "linear-gradient(180deg, #F08EFC 0%, rgba(240, 142, 252, 0.00) 100%), linear-gradient(180deg, rgba(238, 81, 102, 0.00) 0%, rgba(238, 81, 102, 0.48) 100%)",
   },
   components: {
     Button: {
@@ -45,6 +47,27 @@ const theme = extendTheme({
         "gradient-outline": {
           bg: "none",
           color: "#B2BAC8",
+        },
+      },
+    },
+    Box: {
+      varaints: {
+        "gradient-box": {
+          bg: "#ECF1F4",
+          width: "200px",
+          height: "200px",
+          borderRadius: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          mx: "auto",
+          border: "1px solid blue",
+          cursor: "pointer",
+          _hover: {
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+            border: "1px solid linear(to-l, #7928CA, #FF0080)",
+          },
         },
       },
     },

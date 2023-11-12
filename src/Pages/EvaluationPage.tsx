@@ -3,7 +3,16 @@ import {
   Button,
   Container,
   HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
   Text,
+  useDisclosure,
   useSteps,
 } from "@chakra-ui/react";
 import Breadcrumb, { BreadCrumbItem } from "../components/Breadcrumb";
@@ -12,9 +21,12 @@ import FormStepper from "../components/FormStepper";
 import Form from "../components/Form";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { mapFormQuestionToAnswerState } from "../utils/mapFormQuestionToAnswerState";
 import { initialize } from "../store/evaluationSlice";
+import { mockCourses } from "../mock/mockCourses";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const breadCrumbItem: BreadCrumbItem[] = [
   {
@@ -29,6 +41,11 @@ const breadCrumbItem: BreadCrumbItem[] = [
 
 const EvaluationPage: React.FC = () => {
   const form = useSelector((state: RootState) => state.evaluationForm.result);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
@@ -44,7 +61,19 @@ const EvaluationPage: React.FC = () => {
   }, []);
 
   const handleSubmit = () => {
-    console.log(JSON.stringify(form));
+    onOpen();
+  };
+
+  const handleComfirmSubmit = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const course = mockCourses.find((course) => course.course_id === id);
+      if (!course) return;
+      course.status = "evaluated";
+      const initialState = mapFormQuestionToAnswerState(mockForm);
+      dispatch(initialize(initialState));
+      navigate("/evaluation");
+    }, 300);
   };
 
   const handleNext = () => {
@@ -59,6 +88,12 @@ const EvaluationPage: React.FC = () => {
     const initalState = mapFormQuestionToAnswerState(mockForm);
     dispatch(initialize(initalState));
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  });
 
   return (
     <Box w="full" bgColor="rgba(255, 238, 244, 0.50)" minH="100vh" pt="30px">
@@ -78,7 +113,7 @@ const EvaluationPage: React.FC = () => {
               ICE capstone evalutaion
             </Text>
 
-            <Box px="20px" mt="20px">
+            <Box px="20px" my="20px">
               <FormStepper
                 activeStep={activeStep}
                 steps={mockForm.section}
@@ -91,21 +126,50 @@ const EvaluationPage: React.FC = () => {
               section={mockForm.section[activeStep]}
             />
 
-            <HStack justifyContent="space-between">
-              <Button onClick={clearForm}>clear form</Button>
-              <Box>
+            <HStack justifyContent="space-between" mt="30px">
+              <Button onClick={clearForm} bgColor="#E74645" color="white">
+                clear form
+              </Button>
+              <HStack gap="20px">
                 {activeStep !== 0 && (
                   <Button onClick={handleBack}> back </Button>
                 )}
                 {activeStep !== mockForm.section.length - 1 && (
                   <Button onClick={handleNext}> next </Button>
                 )}
-                <Button onClick={() => handleSubmit()}> submit </Button>
-              </Box>
+                {activeStep === mockForm.section.length - 1 && (
+                  <Button colorScheme="messenger" onClick={handleSubmit}>
+                    {" "}
+                    submit{" "}
+                  </Button>
+                )}
+              </HStack>
             </HStack>
           </Container>
         </Box>
       </Container>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Form Submission</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>Are you sure to submit the form</ModalBody>
+
+          <ModalFooter>
+            <Button bgColor="#E74645" color="white" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button
+              bgColor="#3BCC69"
+              color="white"
+              onClick={handleComfirmSubmit}
+            >
+              Submit
+              {isLoading && <Spinner ml="3" />}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
