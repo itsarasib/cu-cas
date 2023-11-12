@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   HStack,
   Image,
   Link,
@@ -32,16 +31,13 @@ const navItem = [
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
   const { isAuthenticated, token, name } = useAuth();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      dispatch(logout());
-      navigate("/");
-      setIsLoading(false);
-    }, 300);
+    dispatch(logout());
+    setIsLoading(false);
+    return true;
   };
   return (
     <HStack
@@ -82,10 +78,10 @@ const Navbar: React.FC = () => {
               name={name ? name : "A"}
             />
             <Text fontWeight={500}> {token} </Text>
-            <Button ml="20px" size="sm" onClick={handleLogout}>
+            <Link ml="20px" size="sm" onClick={handleLogout} href="/">
               Log out
               {isLoading && <Spinner size="sm" ml="5px" thickness="2px" />}
-            </Button>
+            </Link>
           </HStack>
         ) : (
           <Link
