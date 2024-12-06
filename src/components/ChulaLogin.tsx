@@ -130,7 +130,7 @@ const ChulaLogin = () => {
           _hover={{ color: "#FF7456" }}
           onClick={onOpen}
         >
-          <Text> forgot password? </Text>
+          <Text> forgot password? (Show password) </Text>
         </Box>
         <Button variant="gradient-button" onClick={handleLogin}>
           Login
@@ -140,12 +140,9 @@ const ChulaLogin = () => {
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay backdropFilter="blur(10px)" />
         <ModalContent>
-          <ModalHeader>Opps!</ModalHeader>
+          <ModalHeader>your username and password</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Please contact university it team to reset the password <br />{" "}
-            contact: 191
-          </ModalBody>
+          <ModalBody>username: 6338145221 password: 1234</ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

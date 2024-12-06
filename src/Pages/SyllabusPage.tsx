@@ -4,9 +4,17 @@ import {
   Container,
   HStack,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Select,
   Spinner,
   Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -19,6 +27,7 @@ const SyllabusPage: React.FC = () => {
   const [shouldShow, setShouldShow] = useState<boolean>(false);
   const [src, setSrc] = useState<string>("");
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSearch = () => {
     setIsLoading(true);
@@ -63,6 +72,40 @@ const SyllabusPage: React.FC = () => {
       <Text fontSize="2xl" fontWeight={500}>
         {" "}
         Search for course syllabus{" "}
+        <div>
+          <Box
+            textColor={"#FF0000"} //red
+            fontSize="sm"
+            fontWeight={300}
+            cursor="pointer"
+            _hover={{ color: "#FF7456" }}
+            onClick={onOpen}
+          >
+            <Text> *hint for find course </Text>
+          </Box>
+        </div>
+        <Modal isCentered isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay backdropFilter="blur(10px)" />
+          <ModalContent>
+            <ModalHeader>hint for find course </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>
+                Search Keyword: ui
+                <br />
+                Semester: 1
+                <br />
+                Academic Year: 2023
+              </Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Text>
       <HStack mt="20px" justifyContent="space-between">
         <HStack gap="10px" fontWeight={500}>
